@@ -4,7 +4,6 @@ import Table from './components/Table';
 import FilterName from './components/FilterName';
 import Fetch from './hooks/useFetch';
 import Filter from './components/Filter';
-import { number } from 'prop-types';
 
 function App() {
   const [planets, setPlanets] = useState([]);
