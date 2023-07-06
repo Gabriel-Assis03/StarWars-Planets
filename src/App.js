@@ -8,6 +8,7 @@ import Filter from './components/Filter';
 function App() {
   const [planets, setPlanets] = useState([]);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [listFilter, setListFilter] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [valueFilter, setValueFilter] = useState(0);
   const [columnFilter, setColumnFilter] = useState('population');
@@ -45,22 +46,27 @@ function App() {
   };
 
   const clickFilter = () => {
-    console.log(columnFilter);
-    console.log(comparisonFilter);
-    console.log(typeof valueFilter);
-    const filterPlanets = planets.filter((e) => {
-      if (comparisonFilter === 'maior que') {
-        return Number(e[columnFilter]) > valueFilter;
-      }
-      if (comparisonFilter === 'menor que') {
-        return Number(e[columnFilter]) < valueFilter;
-      }
-      if (comparisonFilter === 'igual a') {
-        return e[columnFilter] === valueFilter;
-      }
-      return false;
+    listFilter.push({
+      column: columnFilter,
+      comparison: comparisonFilter,
+      value: valueFilter,
     });
-    setFilteredPlanets(filterPlanets);
+    listFilter.forEach((list) => {
+      const filterPlanets = filteredPlanets.filter((e) => {
+        if (list.comparison === 'maior que') {
+          return Number(e[list.column]) > list.value;
+        }
+        if (list.comparison === 'menor que') {
+          return Number(e[list.column]) < list.value;
+        }
+        if (list.comparison === 'igual a') {
+          return e[list.column] === list.value;
+        }
+        return false;
+      });
+      setFilteredPlanets(filterPlanets);
+    });
+    setListFilter(listFilter);
   };
 
   return (
@@ -77,6 +83,17 @@ function App() {
         handleComparisonFilter={ handleComparisonFilter }
         onClickFilter={ clickFilter }
       />
+      <br />
+      {
+        listFilter.map((e) => (
+          <p
+            key={ e }
+          >
+            {`${e.column} ${e.comparison} ${e.value}`}
+
+          </p>
+        ))
+      }
       <Table planets={ filteredPlanets } />
     </>
   );
