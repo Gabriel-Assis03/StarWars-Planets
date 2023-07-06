@@ -114,6 +114,39 @@ function App() {
     setListFilter(newFilter);
   };
 
+  const orderClick = (column, ord) => {
+    if (ord === 'ASC') {
+      const unk = filteredPlanets.filter((e) => {
+        const isNumber = Number(e[column]);
+        return Number.isNaN(isNumber);
+      });
+      console.log(unk);
+      const numb = filteredPlanets.filter((e) => {
+        const isNumber = Number(e[column]);
+        return !(Number.isNaN(isNumber));
+      });
+      console.log(numb);
+      const orderFilter = numb.sort((a, b) => a[column] - b[column]);
+      const finalOrderFilter = [...orderFilter, ...unk];
+      setFilteredPlanets(finalOrderFilter);
+    }
+    if (ord === 'DESC') {
+      const unk = filteredPlanets.filter((e) => {
+        const isNumber = Number(e[column]);
+        return Number.isNaN(isNumber);
+      });
+      console.log(unk);
+      const numb = filteredPlanets.filter((e) => {
+        const isNumber = Number(e[column]);
+        return !(Number.isNaN(isNumber));
+      });
+      console.log(numb);
+      const orderFilter = numb.sort((a, b) => b[column] - a[column]);
+      const finalOrderFilter = [...orderFilter, ...unk];
+      setFilteredPlanets(finalOrderFilter);
+    }
+  };
+
   return (
     <>
       <FilterName
@@ -129,6 +162,7 @@ function App() {
         onClickFilter={ clickFilter }
         valuesColumns={ valuesColumns }
         clearFilter={ clearFilter }
+        orderClick={ orderClick }
       />
       <br />
       {
