@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { FaTrash } from 'react-icons/fa';
 import Table from './components/Table';
 import FilterName from './components/FilterName';
 import Fetch from './hooks/useFetch';
@@ -48,30 +49,69 @@ function App() {
   };
 
   const clickFilter = () => {
-    listFilter.push({
-      column: columnFilter,
-      comparison: comparisonFilter,
-      value: valueFilter,
-    });
-    listFilter.forEach((list) => {
-      const filterPlanets = filteredPlanets.filter((e) => {
-        if (list.comparison === 'maior que') {
-          return Number(e[list.column]) > list.value;
-        }
-        if (list.comparison === 'menor que') {
-          return Number(e[list.column]) < list.value;
-        }
-        if (list.comparison === 'igual a') {
-          return e[list.column] === list.value;
-        }
-        return false;
+    if (valuesColumns.length !== 0) {
+      listFilter.push({
+        column: columnFilter,
+        comparison: comparisonFilter,
+        value: valueFilter,
       });
-      const newValuesColumns = valuesColumns.filter((item) => item !== list.column);
-      setColumnFilter(newValuesColumns[0]);
-      setValuesColumns(newValuesColumns);
-      setFilteredPlanets(filterPlanets);
-    });
-    setListFilter(listFilter);
+      listFilter.forEach((list) => {
+        const filterPlanets = filteredPlanets.filter((e) => {
+          if (list.comparison === 'maior que') {
+            return Number(e[list.column]) > list.value;
+          }
+          if (list.comparison === 'menor que') {
+            return Number(e[list.column]) < list.value;
+          }
+          if (list.comparison === 'igual a') {
+            return e[list.column] === list.value;
+          }
+          return false;
+        });
+        const newValuesColumns = valuesColumns.filter((item) => item !== list.column);
+        setColumnFilter(newValuesColumns[0]);
+        setValuesColumns(newValuesColumns);
+        setFilteredPlanets(filterPlanets);
+      });
+      setListFilter(listFilter);
+    }
+  };
+
+  const clearFilter = () => {
+    setValuesColumns(['population',
+      'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+    setColumnFilter('population');
+    setListFilter([]);
+    setFilteredPlanets(planets);
+  };
+
+  const removeFilter = (id) => {
+    const newFilter = listFilter.filter((e) => e.column !== id);
+    if (newFilter.length === 0) {
+      setFilteredPlanets(planets);
+    } else {
+      newFilter.forEach((list) => {
+        const filterPlanets = planets.filter((e) => {
+          if (list.comparison === 'maior que') {
+            return Number(e[list.column]) > list.value;
+          }
+          if (list.comparison === 'menor que') {
+            return Number(e[list.column]) < list.value;
+          }
+          if (list.comparison === 'igual a') {
+            return e[list.column] === list.value;
+          }
+          return false;
+        });
+        const newValuesColumns = valuesColumns.filter((item) => item !== list.column);
+        setColumnFilter(newValuesColumns[0]);
+        setValuesColumns(newValuesColumns);
+        setFilteredPlanets(filterPlanets);
+      });
+    }
+    setValuesColumns(valuesColumns);
+    setColumnFilter(valuesColumns[0]);
+    setListFilter(newFilter);
   };
 
   return (
@@ -88,16 +128,26 @@ function App() {
         handleComparisonFilter={ handleComparisonFilter }
         onClickFilter={ clickFilter }
         valuesColumns={ valuesColumns }
+        clearFilter={ clearFilter }
       />
       <br />
       {
         listFilter.map((e) => (
-          <p
-            key={ e }
+          <div
+            className="listFilters"
+            key={ e.column }
+            data-testid="filter"
           >
-            {`${e.column} ${e.comparison} ${e.value}`}
+            <p>
+              {`${e.column} ${e.comparison} ${e.value}`}
 
-          </p>
+            </p>
+            <button
+              onClick={ () => removeFilter(e.column) }
+            >
+              <FaTrash />
+            </button>
+          </div>
         ))
       }
       <Table planets={ filteredPlanets } />

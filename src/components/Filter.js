@@ -10,69 +10,49 @@ class Filter extends React.Component {
       handleComparisonFilter,
       onClickFilter,
       valuesColumns,
+      clearFilter,
     } = this.props;
     return (
       <>
-        <select data-testid="column-filter" onChange={ handleColumnFilter }>
-          {
-            valuesColumns.map((e) => (
+        <div>
+          <select data-testid="column-filter" onChange={ handleColumnFilter }>
+            {valuesColumns.map((e) => (
               <option
                 key={ e }
                 value={ e }
               >
-                { e }
+                {e}
 
               </option>
-            ))
-          }
-          {/* <option
-            value="population"
+            ))}
+          </select>
+          <select data-testid="comparison-filter" onChange={ handleComparisonFilter }>
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
+          </select>
+          <input
+            type="number"
+            data-testid="value-filter"
+            onChange={ handleValueFilter }
+            value={ value }
+          />
+          <button
+            data-testid="button-filter"
+            onClick={ onClickFilter }
           >
-            population
+            Filter
 
-          </option>
-          <option
-            value="orbital_period"
-          >
-            orbital_period
-
-          </option>
-          <option
-            value="diameter"
-          >
-            diameter
-
-          </option>
-          <option
-            value="rotation_period"
-          >
-            rotation_period
-
-          </option>
-          <option
-            value="surface_water"
-          >
-            surface_water
-
-          </option> */}
-        </select>
-        <select data-testid="comparison-filter" onChange={ handleComparisonFilter }>
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
-        </select>
-        <input
-          type="number"
-          data-testid="value-filter"
-          onChange={ handleValueFilter }
-          value={ value }
-        />
+          </button>
+        </div>
+        <div>
+          <p>ordem</p>
+        </div>
         <button
-          data-testid="button-filter"
-          onClick={ onClickFilter }
+          data-testid="button-remove-filters"
+          onClick={ clearFilter }
         >
-          Filter
-
+          Remove Filters
         </button>
       </>
     );
