@@ -167,7 +167,7 @@ function App() {
       />
       <br />
       {
-        listFilter.map((e) => (
+        listFilter.map((e, index) => (
           <div
             className="listFilters"
             key={ e.column }
@@ -178,6 +178,7 @@ function App() {
 
             </p>
             <button
+              data-testid={ `remove-filter${index}` }
               onClick={ () => removeFilter(e.column) }
             >
               <FaTrash />
