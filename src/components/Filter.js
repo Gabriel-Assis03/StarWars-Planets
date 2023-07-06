@@ -9,15 +9,51 @@ class Filter extends React.Component {
       handleColumnFilter,
       handleComparisonFilter,
       onClickFilter,
+      disabledColumn,
     } = this.props;
     return (
       <>
         <select data-testid="column-filter" onChange={ handleColumnFilter }>
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          <option
+            value="population"
+            style={ { display: disabledColumn[0].style } }
+            disabled={ disabledColumn[0].disabled }
+          >
+            population
+
+          </option>
+          <option
+            value="orbital_period"
+            style={ { display: disabledColumn[1].style } }
+            disabled={ disabledColumn[1].disabled }
+          >
+            orbital_period
+
+          </option>
+          <option
+            value="diameter"
+            style={ { display: disabledColumn[2].style } }
+            disabled={ disabledColumn[2].disabled }
+          >
+            diameter
+
+          </option>
+          <option
+            value="rotation_period"
+            style={ { display: disabledColumn[3].style } }
+            disabled={ disabledColumn[3].disabled }
+          >
+            rotation_period
+
+          </option>
+          <option
+            value="surface_water"
+            style={ { display: disabledColumn[4].style } }
+            disabled={ disabledColumn[4].disabled }
+          >
+            surface_water
+
+          </option>
         </select>
         <select data-testid="comparison-filter" onChange={ handleComparisonFilter }>
           <option value="maior que">maior que</option>
@@ -45,9 +81,8 @@ class Filter extends React.Component {
 Filter.propTypes = {
   value: propTypes.string.isRequired,
   handleValueFilter: propTypes.func.isRequired,
-  // column: propTypes.string.isRequired,
+  disabledColumn: propTypes.string.isRequired,
   handleColumnFilter: propTypes.func.isRequired,
-  // comparison: propTypes.string.isRequired,
   handleComparisonFilter: propTypes.func.isRequired,
   onClickFilter: propTypes.func.isRequired,
 };

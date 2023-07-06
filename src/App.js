@@ -13,6 +13,7 @@ function App() {
   const [valueFilter, setValueFilter] = useState(0);
   const [columnFilter, setColumnFilter] = useState('population');
   const [comparisonFilter, setComparisonFilter] = useState('maior que');
+  const [disabledColumn, setDisabledColumn] = useState(['', '', '', '', '']);
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -27,7 +28,7 @@ function App() {
   useEffect(() => {
     const newPlanets = planets.filter((e) => e.name.includes(nameFilter));
     setFilteredPlanets(newPlanets);
-  }, [nameFilter, planets]);
+  }, [nameFilter, planets, disabledColumn]);
 
   const handleNameFilter = ({ target }) => {
     setNameFilter(target.value);
@@ -45,12 +46,35 @@ function App() {
     setComparisonFilter(target.value);
   };
 
+  // const disabled = (list) => {
+  //   const newDis = [...disabledColumn];
+  //   list.forEach((e) => {
+  //     if (e.column === 'population') {
+  //       newDis[0] = { style: 'none', disabled: true };
+  //     }
+  //     if (e.column === 'orbital_period') {
+  //       newDis[1] = { style: 'none', disabled: true };
+  //     }
+  //     if (e.column === 'diameter') {
+  //       newDis[2] = { style: 'none', disabled: true };
+  //     }
+  //     if (e.column === 'rotation_period') {
+  //       newDis[3] = { style: 'none', disabled: true };
+  //     }
+  //     if (e.column === 'surface_water') {
+  //       newDis[4] = { style: 'none', disabled: true };
+  //     }
+  //   });
+  //   setDisabledColumn(newDis);
+  // };
+
   const clickFilter = () => {
     listFilter.push({
       column: columnFilter,
       comparison: comparisonFilter,
       value: valueFilter,
     });
+    // disabled(listFilter);
     listFilter.forEach((list) => {
       const filterPlanets = filteredPlanets.filter((e) => {
         if (list.comparison === 'maior que') {
@@ -82,6 +106,7 @@ function App() {
         handleColumnFilter={ handleColumnFilter }
         handleComparisonFilter={ handleComparisonFilter }
         onClickFilter={ clickFilter }
+        disabledColumn={ disabledColumn }
       />
       <br />
       {
